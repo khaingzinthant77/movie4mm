@@ -35,7 +35,6 @@ const SeriesList = ({ navigation }) => {
     const url = tvseriesApi + `?page=${page}`;
     setLoading(true);
     try {
-      const self = this;
       axios
         .get(url, {
           headers: {
