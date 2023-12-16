@@ -5,7 +5,11 @@ const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => (
   <Drawer.Navigator>
-    <Drawer.Screen name="StackNavigator" component={StackNavigator} />
+    <Drawer.Screen
+      name="StackNavigator"
+      component={StackNavigator}
+      options={{ headerShown: false }}
+    />
   </Drawer.Navigator>
 );
 
