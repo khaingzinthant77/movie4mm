@@ -12,7 +12,7 @@ import DarkThem from "@screens/theme/DarkTheme";
 import { AppContext } from "@screens/context/AppContext";
 
 export default function App() {
-  const [isDarkTheme, setDarkTheme] = useState(true);
+  const [isDarkTheme, setDarkTheme] = useState(false);
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {

@@ -7,6 +7,8 @@ const DarkThem = {
     text: "rgb(229,229,231)",
     border: "rgb(39,39,41)",
     notification: "rgb(255,69,58)",
+    activeColor: "#bab9b5",
+    loading_color: "#ffffff",
   },
 };
 

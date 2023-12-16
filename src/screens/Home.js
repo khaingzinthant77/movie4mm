@@ -10,7 +10,6 @@ import {
 } from "react-native";
 //import library
 import { useTheme } from "@react-navigation/native";
-import { AppContext } from "./context/AppContext";
 import { ImageSlider } from "react-native-image-slider-banner";
 import axios from "axios";
 //import url
@@ -24,7 +23,6 @@ import Fonts from "@styles/Fonts";
 import HeaderComponent from "@components/HeaderComponent";
 const Home = ({ navigation }) => {
   const { colors } = useTheme();
-  const { isDarkTheme, setDarkTheme } = useContext(AppContext);
   const [sliders, setSliders] = useState([]);
   const [genres, setGenres] = useState([]);
   const [actors, setActors] = useState([]);
@@ -155,7 +153,7 @@ const Home = ({ navigation }) => {
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
-          <ActivityIndicator size="large" color="#900" />
+          <ActivityIndicator size="large" color={colors.activeColor} />
         </View>
       ) : (
         <View style={styles.container}>

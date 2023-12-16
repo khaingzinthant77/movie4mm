@@ -7,6 +7,7 @@ const DefaultTheme = {
     text: "rgb(28,28,30)",
     border: "rgb(216,216,216)",
     notification: "rgb(255,59,48)",
+    loading_color: "#900",
   },
 };
 
