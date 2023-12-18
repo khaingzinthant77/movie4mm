@@ -7,32 +7,32 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { useTheme, useRoute } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/FontAwesome";
-//import component
-import BackHeader from "@components/BackHeader";
-//import font
-import Styles from "@styles/Styles";
 //import library
 import axios from "axios";
+import { useTheme, useRoute } from "@react-navigation/native";
+// import style
+import Styles from "@styles/Styles";
+//import icon
+import Icon from "react-native-vector-icons/FontAwesome";
 //import api url
-import { contentByStarApi } from "@apis/Urls";
+import { latestMovieApi } from "@apis/Urls";
 import { API_KEY } from "@env";
-const MovieByStar = ({ navigation }) => {
+//import component
+import BackHeader from "@components/BackHeader";
+const LatestList = ({ navigation }) => {
   const { colors } = useTheme();
-  const route = new useRoute();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const route = new useRoute();
   useEffect(() => {
     fetchData();
   }, []);
   fetchData = () => {
-    const url =
-      contentByStarApi + `?id=${route.params.data.star_id}&page=${page}`;
-    setLoading(true);
+    const url = latestMovieApi + `?page=${page}&type=${route.params.type}`;
+    setLoading(false);
     try {
       axios
         .get(url, {
@@ -41,14 +41,16 @@ const MovieByStar = ({ navigation }) => {
           },
         })
         .then(function (response) {
-          setData(page === 1 ? response.data : [...data, ...response.data]);
+          setData(response.data);
+          setLoading(false);
+          setRefreshing(false);
         })
         .catch(function (err) {
-          console.log("Movie List by Star API", err);
+          console.log("Latest Movie List API", err);
         });
     } catch (error) {
-      setError(error);
       setLoading(false);
+      setError(error);
     }
   };
 
@@ -86,14 +88,14 @@ const MovieByStar = ({ navigation }) => {
   };
 
   handleLoadMore = () => {
-    if (isLoading) {
+    if (!isLoading) {
       setPage(page + 1);
       fetchData();
     }
   };
 
   renderFooter = () => {
-    if (isLoading) return null;
+    if (!isLoading) return null;
     return (
       <View style={{ paddingVertical: 20 }}>
         <ActivityIndicator size="large" color={colors.loading_color} />
@@ -105,7 +107,7 @@ const MovieByStar = ({ navigation }) => {
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <BackHeader
         Onpress={() => navigation.navigate("BottomNavigator")}
-        name={route.params.data.star_name}
+        name="Latest Movies"
       />
       <FlatList
         data={data}
@@ -117,8 +119,8 @@ const MovieByStar = ({ navigation }) => {
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
         contentContainerStyle={{ padding: 20 }}
+        showVerticalScrollIndicator={false}
         numColumns={3}
-        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View
             style={{
@@ -135,4 +137,4 @@ const MovieByStar = ({ navigation }) => {
   );
 };
 
-export default MovieByStar;
+export default LatestList;

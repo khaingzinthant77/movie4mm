@@ -2,36 +2,39 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
+  StyleSheet,
   TouchableOpacity,
   Image,
+  Dimensions,
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { useTheme, useRoute } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/FontAwesome";
 //import component
 import BackHeader from "@components/BackHeader";
 //import font
+import Fonts from "@styles/Fonts";
+import Colors from "@styles/Colors";
 import Styles from "@styles/Styles";
 //import library
 import axios from "axios";
+import { useTheme } from "@react-navigation/native";
 //import api url
-import { contentByStarApi } from "@apis/Urls";
+import { fourKApi } from "@apis/Urls";
 import { API_KEY } from "@env";
-const MovieByStar = ({ navigation }) => {
+import Icon from "react-native-vector-icons/FontAwesome";
+const FourKMovie = ({ navigation }) => {
   const { colors } = useTheme();
-  const route = new useRoute();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     fetchData();
   }, []);
   fetchData = () => {
-    const url =
-      contentByStarApi + `?id=${route.params.data.star_id}&page=${page}`;
+    const url = fourKApi + `?page=${page}`;
     setLoading(true);
     try {
       axios
@@ -42,13 +45,16 @@ const MovieByStar = ({ navigation }) => {
         })
         .then(function (response) {
           setData(page === 1 ? response.data : [...data, ...response.data]);
+          setLoading(false);
+          setRefreshing(false);
         })
         .catch(function (err) {
-          console.log("Movie List by Star API", err);
+          console.log("Current Year Movie API", err);
         });
     } catch (error) {
       setError(error);
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -86,14 +92,14 @@ const MovieByStar = ({ navigation }) => {
   };
 
   handleLoadMore = () => {
-    if (isLoading) {
+    if (!isLoading) {
       setPage(page + 1);
       fetchData();
     }
   };
 
   renderFooter = () => {
-    if (isLoading) return null;
+    if (!isLoading) return null;
     return (
       <View style={{ paddingVertical: 20 }}>
         <ActivityIndicator size="large" color={colors.loading_color} />
@@ -105,7 +111,7 @@ const MovieByStar = ({ navigation }) => {
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <BackHeader
         Onpress={() => navigation.navigate("BottomNavigator")}
-        name={route.params.data.star_name}
+        name="4K"
       />
       <FlatList
         data={data}
@@ -117,8 +123,8 @@ const MovieByStar = ({ navigation }) => {
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
         contentContainerStyle={{ padding: 20 }}
-        numColumns={3}
         showsVerticalScrollIndicator={false}
+        numColumns={3}
         ListEmptyComponent={
           <View
             style={{
@@ -135,4 +141,4 @@ const MovieByStar = ({ navigation }) => {
   );
 };
 
-export default MovieByStar;
+export default FourKMovie;

@@ -1,5 +1,8 @@
 export const BaseUrl = "http://app.movie4mm.com/rest-api/v130/";
 
+//login api
+export const loginApi = BaseUrl + "login";
+
 //home api
 export const homeApi = BaseUrl + "home_content_for_android";
 
@@ -26,6 +29,9 @@ export const contentByStarApi = BaseUrl + "content_by_star_id";
 
 //current year movie api
 export const currentYearApi = BaseUrl + "current_year_movies";
+
+//4k movie list api
+export const fourKApi = BaseUrl + "video_4k";
 
 //latest movies api
 export const latestMovieApi = BaseUrl + "latest_video";

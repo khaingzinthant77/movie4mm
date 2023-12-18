@@ -19,6 +19,9 @@ const BottomNavigator = () => {
       initialRouteName="Home"
       sceneAnimationEnabled={false}
       barStyle={{ backgroundColor: "#ffff" }}
+      screenOptions={{
+        tabBarActiveTintColor: isDarkTheme ? "#2461b5" : Colors.active_color,
+      }}
     >
       <Tab.Screen
         name="Home Screen"
@@ -38,6 +41,7 @@ const BottomNavigator = () => {
               size={26}
             />
           ),
+
           headerShown: false,
         }}
       />

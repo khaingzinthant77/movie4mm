@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwsome from "react-native-vector-icons/FontAwesome";
@@ -30,6 +31,15 @@ const CustomDrawer = ({ navigation }) => {
   const [isActiveProfile, setActiveProfile] = useState(false);
   const [isActiveFavourite, setActiveFavourite] = useState(false);
   const [isActiveSetting, setActiveSetting] = useState(false);
+  const [userID, setUserID] = useState(null);
+
+  useEffect(() => {
+    getAsyncData();
+  }, []);
+  getAsyncData = async () => {
+    const user_id = await AsyncStorage.getItem("user_id");
+    setUserID(user_id);
+  };
   const onToggleSwitch = () => {
     setIsSwitchOn(!isSwitchOn);
     setDarkTheme((current) => !current);
@@ -116,6 +126,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(true);
     setActiveFavourite(false);
     setActiveSetting(false);
+    navigation.navigate("Profile");
   };
   const onPressFavourite = () => {
     setActiveHome(false);
@@ -127,6 +138,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(false);
     setActiveFavourite(true);
     setActiveSetting(false);
+    navigation.navigate("FavouriteList");
   };
   const onPressSetting = () => {
     setActiveHome(false);
@@ -138,6 +150,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(false);
     setActiveFavourite(false);
     setActiveSetting(true);
+    navigation.navigate("SettingList");
   };
   return (
     <View style={{ flex: 1 }}>
@@ -377,118 +390,160 @@ const CustomDrawer = ({ navigation }) => {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.row_container,
-              isActiveProfile
-                ? {
-                    backgroundColor: Colors.drawer_active_color,
-                    borderRadius: 5,
-                  }
-                : null,
-            ]}
-            onPress={() => onPressProfile()}
-            activeOpacity={0.8}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <FontAwsome name="user" size={20} color={Colors.theme_color} />
-              <Text
-                style={{
-                  marginLeft: 30,
-                  color: isDarkTheme
-                    ? isActiveProfile
-                      ? Colors.drawer_dark_color
-                      : "white"
-                    : "gray",
-                  fontFamily: Fonts.primary,
-                }}
-              >
-                Profile
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.row_container,
-              isActiveFavourite
-                ? {
-                    backgroundColor: Colors.drawer_active_color,
-                    borderRadius: 5,
-                  }
-                : null,
-            ]}
-            onPress={() => onPressFavourite()}
-            activeOpacity={0.8}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <MaterialCommunityIcons
-                name="heart"
-                size={20}
-                color={Colors.theme_color}
-              />
-              <Text
-                style={{
-                  marginLeft: 30,
-                  color: isDarkTheme
-                    ? isActiveFavourite
-                      ? Colors.drawer_dark_color
-                      : "white"
-                    : "gray",
-                  fontFamily: Fonts.primary,
-                }}
-              >
-                Favourite
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.row_container,
-              isActiveSetting
-                ? {
-                    backgroundColor: Colors.drawer_active_color,
-                    borderRadius: 5,
-                  }
-                : null,
-            ]}
-            onPress={() => onPressSetting()}
-            activeOpacity={0.8}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Fontisto
-                name="player-settings"
-                size={20}
-                color={Colors.theme_color}
-              />
-              <Text
-                style={{
-                  marginLeft: 30,
-                  color: isDarkTheme
-                    ? isActiveSetting
-                      ? Colors.drawer_dark_color
-                      : "white"
-                    : "gray",
-                  fontFamily: Fonts.primary,
-                }}
-              >
-                Setting
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.row_container}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <AntDesign name="logout" size={20} color={Colors.theme_color} />
-              <Text
-                style={{
-                  marginLeft: 30,
-                  color: isDarkTheme ? "white" : "gray",
-                  fontFamily: Fonts.primary,
-                }}
-              >
-                Sign Out
-              </Text>
-            </View>
-          </View>
+          {userID ? (
+            <TouchableOpacity
+              style={[
+                styles.row_container,
+                isActiveProfile
+                  ? {
+                      backgroundColor: Colors.drawer_active_color,
+                      borderRadius: 5,
+                    }
+                  : null,
+              ]}
+              onPress={() => onPressProfile()}
+              activeOpacity={0.8}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <FontAwsome name="user" size={20} color={Colors.theme_color} />
+                <Text
+                  style={{
+                    marginLeft: 30,
+                    color: isDarkTheme
+                      ? isActiveProfile
+                        ? Colors.drawer_dark_color
+                        : "white"
+                      : "gray",
+                    fontFamily: Fonts.primary,
+                  }}
+                >
+                  Profile
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[
+                styles.row_container,
+                isActiveProfile
+                  ? {
+                      backgroundColor: Colors.drawer_active_color,
+                      borderRadius: 5,
+                    }
+                  : null,
+              ]}
+              onPress={() => {
+                navigation.navigate("Login");
+              }}
+              activeOpacity={0.8}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <AntDesign name="login" size={20} color={Colors.theme_color} />
+                <Text
+                  style={{
+                    marginLeft: 30,
+                    color: isDarkTheme
+                      ? isActiveProfile
+                        ? Colors.drawer_dark_color
+                        : "white"
+                      : "gray",
+                    fontFamily: Fonts.primary,
+                  }}
+                >
+                  Login
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          {userID ? (
+            <TouchableOpacity
+              style={[
+                styles.row_container,
+                isActiveFavourite
+                  ? {
+                      backgroundColor: Colors.drawer_active_color,
+                      borderRadius: 5,
+                    }
+                  : null,
+              ]}
+              onPress={() => onPressFavourite()}
+              activeOpacity={0.8}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <MaterialCommunityIcons
+                  name="heart"
+                  size={20}
+                  color={Colors.theme_color}
+                />
+                <Text
+                  style={{
+                    marginLeft: 30,
+                    color: isDarkTheme
+                      ? isActiveFavourite
+                        ? Colors.drawer_dark_color
+                        : "white"
+                      : "gray",
+                    fontFamily: Fonts.primary,
+                  }}
+                >
+                  Favourite
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : null}
+          {userID == null ? (
+            <TouchableOpacity
+              style={[
+                styles.row_container,
+                isActiveSetting
+                  ? {
+                      backgroundColor: Colors.drawer_active_color,
+                      borderRadius: 5,
+                    }
+                  : null,
+              ]}
+              onPress={() => onPressSetting()}
+              activeOpacity={0.8}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Fontisto
+                  name="player-settings"
+                  size={20}
+                  color={Colors.theme_color}
+                />
+                <Text
+                  style={{
+                    marginLeft: 30,
+                    color: isDarkTheme
+                      ? isActiveSetting
+                        ? Colors.drawer_dark_color
+                        : "white"
+                      : "gray",
+                    fontFamily: Fonts.primary,
+                  }}
+                >
+                  Setting
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : null}
+
+          {userID ? (
+            <TouchableOpacity style={styles.row_container}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <AntDesign name="logout" size={20} color={Colors.theme_color} />
+                <Text
+                  style={{
+                    marginLeft: 30,
+                    color: isDarkTheme ? "white" : "gray",
+                    fontFamily: Fonts.primary,
+                  }}
+                >
+                  Sign Out
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : null}
           <View style={styles.row_container}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Entypo name="moon" size={20} color={Colors.theme_color} />

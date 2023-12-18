@@ -53,7 +53,7 @@ const LiveTVList = ({ navigation }) => {
           <ActivityIndicator size="large" color={colors.loading_color} />
         </View>
       ) : (
-        <View style={{ flex: 1, backgroundColor: "#fff" }}>
+        <View style={{ flex: 1, backgroundColor: colors.background }}>
           <HeaderComponent
             onPress={() => navigation.openDrawer()}
             title="Live TV"
@@ -91,7 +91,6 @@ const LiveTVList = ({ navigation }) => {
                             <Text
                               style={{
                                 fontFamily: Fonts.primary,
-                                color: colors.text,
                               }}
                             >
                               {data.tv_name.length < 12

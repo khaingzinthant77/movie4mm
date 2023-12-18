@@ -7,10 +7,12 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 //import library
 import { useTheme } from "@react-navigation/native";
 import { ImageSlider } from "react-native-image-slider-banner";
+import { Skeleton } from "@rneui/themed";
 import axios from "axios";
 //import url
 import { homeApi } from "@apis/Urls";
@@ -150,10 +152,109 @@ const Home = ({ navigation }) => {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {isLoading ? (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <ActivityIndicator size="large" color={colors.activeColor} />
+        <View style={{ flex: 1 }}>
+          {/* <ActivityIndicator size="large" color={colors.activeColor} /> */}
+          <View style={{ marginTop: 10, paddingHorizontal: 10 }}>
+            <Skeleton animation="wave" width={"100%"} height={200} />
+            <View style={{ flexDirection: "row", marginTop: 10 }}>
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+            </View>
+            <View style={{ flexDirection: "row", marginTop: 10 }}>
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+            </View>
+            <View style={{ flexDirection: "row", marginTop: 10 }}>
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 4}
+                height={100}
+                style={{ marginRight: 10 }}
+              />
+            </View>
+            <View style={{ flexDirection: "row", marginTop: 10 }}>
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 3}
+                height={200}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 3}
+                height={200}
+                style={{ marginRight: 10 }}
+              />
+              <Skeleton
+                animation="wave"
+                width={Dimensions.get("window").width / 3}
+                height={200}
+                style={{ marginRight: 10 }}
+              />
+            </View>
+          </View>
         </View>
       ) : (
         <View style={styles.container}>
@@ -185,7 +286,7 @@ const Home = ({ navigation }) => {
                       activeOpacity={0.8}
                       key={index}
                       onPress={() =>
-                        navigation.navigate("MovieGenre", {
+                        navigation.navigate("MovieByGenre", {
                           genre_id: data.genre_id,
                           name: data.name,
                         })
@@ -215,7 +316,7 @@ const Home = ({ navigation }) => {
                       activeOpacity={0.8}
                       key={index}
                       onPress={() =>
-                        navigation.navigate("StarMovies", {
+                        navigation.navigate("MovieByStar", {
                           data: data,
                         })
                       }
@@ -241,9 +342,9 @@ const Home = ({ navigation }) => {
                   Feature TV Channel
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("MoreLiveTV")}
+                  onPress={() => navigation.navigate("LiveTVList")}
                 >
-                  <Text>MORE</Text>
+                  <Text style={{ color: colors.text }}>MORE</Text>
                 </TouchableOpacity>
               </View>
 
@@ -262,7 +363,7 @@ const Home = ({ navigation }) => {
                         source={{ uri: data.thumbnail_url }}
                         style={styles.feature_img}
                       />
-                      <Text>{data.title}</Text>
+                      <Text style={{ color: colors.text }}>{data.title}</Text>
                     </TouchableOpacity>
                   );
                 })}
@@ -279,9 +380,9 @@ const Home = ({ navigation }) => {
                   {new Date().getFullYear()}
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("CurrentYear")}
+                  onPress={() => navigation.navigate("CurrentYearMovie")}
                 >
-                  <Text>MORE</Text>
+                  <Text style={{ color: colors.text }}>MORE</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView
@@ -328,8 +429,10 @@ const Home = ({ navigation }) => {
                 <Text style={[styles.title_style, { color: colors.text }]}>
                   4K
                 </Text>
-                <TouchableOpacity>
-                  <Text>MORE</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("FourKMovie")}
+                >
+                  <Text style={{ color: colors.text }}>MORE</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView
@@ -377,9 +480,9 @@ const Home = ({ navigation }) => {
                   Latest Movies
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("LatestMovies")}
+                  onPress={() => navigation.navigate("LatestList", { type: 0 })}
                 >
-                  <Text>MORE</Text>
+                  <Text style={{ color: colors.text }}>MORE</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView
@@ -427,9 +530,9 @@ const Home = ({ navigation }) => {
                   Latest TV Series
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("LatestTV")}
+                  onPress={() => navigation.navigate("LatestList", { type: 1 })}
                 >
-                  <Text>MORE</Text>
+                  <Text style={{ color: colors.text }}>MORE</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView
@@ -483,13 +586,13 @@ const Home = ({ navigation }) => {
                     </Text>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate("MovieGenre", {
+                        navigation.navigate("MovieByGenre", {
                           genre_id: data.genre_id,
                           name: data.name,
                         })
                       }
                     >
-                      <Text>MORE</Text>
+                      <Text style={{ color: colors.text }}>MORE</Text>
                     </TouchableOpacity>
                   </View>
                   <ScrollView
