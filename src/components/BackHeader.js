@@ -54,7 +54,7 @@ export default class BackHeader extends React.Component {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => this._OnPress()}
-            style={{ width: 50 }}
+            style={{ width: 30 }}
           >
             <Ionicons name="arrow-back" size={30} color={"white"} />
           </TouchableOpacity>
@@ -74,12 +74,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   text: {
-    textAlign: "center",
+    // textAlign: "center",
     flex: 1,
     color: "#ffffff",
     fontSize: 18,
     fontWeight: "bold",
     fontFamily: Fonts.primary,
+    marginLeft: "30%",
   },
   img: {
     width: 30,

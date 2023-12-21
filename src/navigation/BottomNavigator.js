@@ -63,6 +63,7 @@ const BottomNavigator = () => {
               size={26}
             />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -83,6 +84,7 @@ const BottomNavigator = () => {
               size={26}
             />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -103,6 +105,7 @@ const BottomNavigator = () => {
               size={26}
             />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -123,6 +126,7 @@ const BottomNavigator = () => {
               size={26}
             />
           ),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

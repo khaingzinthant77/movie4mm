@@ -12,6 +12,9 @@ export const movieApi = BaseUrl + "movies";
 //live tv api
 export const livetvApi = BaseUrl + "all_tv_channel_by_category";
 
+//feature tv api
+export const featureTvApi = BaseUrl + "featured_tv_channel";
+
 //tv series api
 export const tvseriesApi = BaseUrl + "tvseries";
 
@@ -38,3 +41,6 @@ export const latestMovieApi = BaseUrl + "latest_video";
 
 //video detail api
 export const movieDetailApi = BaseUrl + "single_details";
+
+//favourite list api
+export const favouriteListApi = BaseUrl + "favorite";

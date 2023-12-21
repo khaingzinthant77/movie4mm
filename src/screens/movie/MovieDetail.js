@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { useRoute, useTheme } from "@react-navigation/native";
+import { useRoute, useTheme, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import moment from "moment";
 //import icon
@@ -23,9 +23,10 @@ import Fonts from "@styles/Fonts";
 import { Divider } from "react-native-paper";
 //import component
 import QualityModal from "@components/QualityModal";
-const MovieDetail = ({ navigation }) => {
+const MovieDetail = () => {
   const route = new useRoute();
   const { colors } = useTheme();
+  const navigation = useNavigation();
   const [thumbnail_url, setThumbnailUrl] = useState(null);
   const [title, setTitle] = useState(null);
   const [release, setRelease] = useState(null);
@@ -79,7 +80,7 @@ const MovieDetail = ({ navigation }) => {
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={{ marginBottom: 20 }}>
           <View style={styles.header_row}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <Ionicons name="arrow-back" size={30} color={colors.text} />
             </TouchableOpacity>
             <TouchableOpacity style={{ marginTop: 10 }}>

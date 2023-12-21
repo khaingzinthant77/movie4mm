@@ -1,10 +1,126 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  FlatList,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { useTheme } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/FontAwesome";
+//import library
+import axios from "axios";
+//import api url
+import { favouriteListApi } from "@apis/Urls";
+import { API_KEY } from "@env";
+//import color
+import Styles from "@styles/Styles";
+//import component
+import HeaderComponent from "@components/HeaderComponent";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const FavouriteList = ({ navigation }) => {
+  const { colors } = useTheme();
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    var user_id = await AsyncStorage.getItem("user_id");
+    const url = favouriteListApi + `?user_id=${user_id}&page=${page}`;
+    setLoading(true);
+    try {
+      axios
+        .get(url, {
+          headers: {
+            "API-KEY": API_KEY,
+          },
+        })
+        .then(function (response) {
+          setData(response.data);
+          setLoading(false);
+          setRefreshing(false);
+        })
+        .catch(function (err) {
+          console.log("Movie List API", err);
+        });
+    } catch (error) {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+  renderItem = ({ item }) => {
+    return (
+      <TouchableOpacity style={Styles.card_btn}>
+        <Image source={{ uri: item.thumbnail_url }} style={Styles.card_img} />
+        <Text>
+          {" "}
+          {item.title.length < 8
+            ? `${item.title}`
+            : `${item.title.substring(0, 8)}...`}
+        </Text>
+        <View style={Styles.quality_style}>
+          <Text style={{ color: "white" }}>{item.video_quality}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+  handleRefresh = () => {
+    // setRefreshing(true);
+    setPage(1);
+    fetchData();
+  };
+
+  handleLoadMore = () => {
+    if (!isLoading) {
+      setPage(page + 1);
+      fetchData();
+    }
+  };
+
+  renderFooter = () => {
+    if (isLoading) return null;
+    return (
+      // <View style={{ paddingVertical: 20 }}>
+      //   <ActivityIndicator size="large" color={colors.loading_color} />
+      // </View>
+      null
+    );
+  };
   return (
-    <View>
-      <Text>FavouriteList</Text>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <HeaderComponent
+        onPress={() => navigation.openDrawer()}
+        title="Favourite"
+      />
+      <FlatList
+        data={data}
+        renderItem={this.renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={renderFooter}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        contentContainerStyle={{ padding: 25 }}
+        numColumns={3}
+        ListEmptyComponent={
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text>{error ? "Error fetching data" : "No data found"}</Text>
+          </View>
+        }
+      />
     </View>
   );
 };

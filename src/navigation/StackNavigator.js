@@ -18,6 +18,9 @@ import LatestList from "@screens/movie/LatestList";
 import FavouriteList from "@screens/favourite/FavouriteList";
 import SettingList from "@screens/setting/SettingList";
 import MovieDetail from "@screens/movie/MovieDetail";
+import ChannelList from "@screens/liveTV/ChannelList";
+import LiveDetail from "@screens/liveTV/LiveDetail";
+import Subscription from "@screens/auth/Subscription";
 
 const Stack = createStackNavigator();
 
@@ -101,6 +104,21 @@ const StackNavigator = () => (
     <Stack.Screen
       name="MovieDetail"
       component={MovieDetail}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="ChannelList"
+      component={ChannelList}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="LiveDetail"
+      component={LiveDetail}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Subscription"
+      component={Subscription}
       options={{ headerShown: false }}
     />
   </Stack.Navigator>

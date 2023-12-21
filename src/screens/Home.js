@@ -14,6 +14,7 @@ import { useTheme } from "@react-navigation/native";
 import { ImageSlider } from "react-native-image-slider-banner";
 import { Skeleton } from "@rneui/themed";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //import url
 import { homeApi } from "@apis/Urls";
 import { API_KEY } from "@env";
@@ -39,6 +40,7 @@ const Home = ({ navigation }) => {
     getHomeData();
   }, []);
   const getHomeData = () => {
+    // AsyncStorage.clear();
     setLoading(true);
     axios
       .get(homeApi, {
@@ -342,7 +344,7 @@ const Home = ({ navigation }) => {
                   Feature TV Channel
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("LiveTVList")}
+                  onPress={() => navigation.navigate("ChannelList")}
                 >
                   <Text style={{ color: colors.text }}>MORE</Text>
                 </TouchableOpacity>

@@ -2,36 +2,37 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
-  Image,
-  FlatList,
   ActivityIndicator,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  Image,
 } from "react-native";
-import { useTheme, useRoute } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/FontAwesome";
-//import component
-import BackHeader from "@components/BackHeader";
-//import font
-import Styles from "@styles/Styles";
+import { useTheme } from "@react-navigation/native";
 //import library
 import axios from "axios";
 //import api url
-import { contentByStarApi } from "@apis/Urls";
+import { featureTvApi } from "@apis/Urls";
 import { API_KEY } from "@env";
-const MovieByStar = ({ navigation }) => {
+import { Skeleton } from "@rneui/themed";
+//import color
+import Fonts from "@styles/Fonts";
+//import component
+import BackHeader from "@components/BackHeader";
+const MovieList = ({ navigation }) => {
   const { colors } = useTheme();
-  const route = new useRoute();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
-  const [isLoading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     fetchData();
   }, []);
-  fetchData = () => {
-    const url =
-      contentByStarApi + `?id=${route.params.data.star_id}&page=${page}`;
+
+  const fetchData = () => {
+    const url = featureTvApi + `?page=${page}`;
     setLoading(true);
     try {
       axios
@@ -41,49 +42,43 @@ const MovieByStar = ({ navigation }) => {
           },
         })
         .then(function (response) {
+          //   console.log(response.data);
           setData(page === 1 ? response.data : [...data, ...response.data]);
+          setLoading(false);
+          setRefreshing(false);
         })
         .catch(function (err) {
-          console.log("Movie List by Star API", err);
+          console.log("Feature TV Channel API", err);
         });
     } catch (error) {
-      setError(error);
       setLoading(false);
+      setRefreshing(false);
     }
   };
-
   renderItem = ({ item }) => {
+    // console.log(item);
     return (
       <TouchableOpacity
-        style={Styles.card_btn}
+        style={styles.feature_btn}
+        activeOpacity={0.8}
+        key={item.live_tv_id}
         onPress={() =>
-          navigation.navigate("MovieDetail", { id: item.videos_id })
+          navigation.navigate("LiveDetail", { id: item.live_tv_id })
         }
       >
-        <Image source={{ uri: item.thumbnail_url }} style={Styles.card_img} />
-        <Text>
-          {" "}
-          {item.title.length < 8
-            ? `${item.title}`
-            : `${item.title.substring(0, 8)}...`}
-        </Text>
-        <View style={Styles.quality_style}>
-          <Text style={{ color: "white" }}>{item.video_quality}</Text>
-        </View>
+        {isLoading ? (
+          <Skeleton animation="wave" width={100} height={50} />
+        ) : (
+          <Image
+            source={{ uri: item.thumbnail_url }}
+            style={styles.feature_img}
+          />
+        )}
 
-        <View style={Styles.release_style}>
-          <Text style={{ color: "white" }}>{item.release}</Text>
-        </View>
-        <View style={Styles.rating_style}>
-          <Icon name="star" size={10} />
-          <Text style={{ fontSize: 12 }}>
-            {parseFloat(item.imdb_rating).toFixed(2)}
-          </Text>
-        </View>
+        <Text style={{ fontFamily: Fonts.primary }}>{item.tv_name}</Text>
       </TouchableOpacity>
     );
   };
-
   handleRefresh = () => {
     setRefreshing(true);
     setPage(1);
@@ -91,39 +86,37 @@ const MovieByStar = ({ navigation }) => {
   };
 
   handleLoadMore = () => {
-    if (isLoading) {
+    if (!isLoading) {
       setPage(page + 1);
       fetchData();
     }
   };
 
   renderFooter = () => {
-    if (isLoading) return null;
+    if (!isLoading) return null;
     return (
       <View style={{ paddingVertical: 20 }}>
         <ActivityIndicator size="large" color={colors.loading_color} />
       </View>
     );
   };
-
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <BackHeader
         Onpress={() => navigation.navigate("BottomNavigator")}
-        name={route.params.data.star_name}
+        name="Live TV"
       />
       <FlatList
         data={data}
-        renderItem={renderItem}
+        renderItem={this.renderItem}
         keyExtractor={(item, index) => index.toString()}
         ListFooterComponent={renderFooter}
         refreshing={refreshing}
         onRefresh={handleRefresh}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
-        contentContainerStyle={{ padding: 20 }}
+        contentContainerStyle={{ padding: 5 }}
         numColumns={3}
-        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View
             style={{
@@ -139,5 +132,25 @@ const MovieByStar = ({ navigation }) => {
     </View>
   );
 };
-
-export default MovieByStar;
+const styles = StyleSheet.create({
+  feature_btn: {
+    backgroundColor: "white",
+    width: 110,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    marginLeft: 10,
+    alignItems: "center",
+    marginBottom: 10,
+    // marginTop: 10,
+  },
+  feature_img: {
+    width: 100,
+    height: 50,
+    borderRadius: 5,
+    marginBottom: 5,
+    // resizeMode:"contain"
+  },
+});
+export default MovieList;

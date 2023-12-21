@@ -21,6 +21,7 @@ import Fonts from "@styles/Fonts";
 // Custom Drawer Content Component
 const CustomDrawer = ({ navigation }) => {
   const { isDarkTheme, setDarkTheme } = useContext(AppContext);
+  const [user_id, setUserID] = useState("");
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [isActiveHome, setActiveHome] = useState(true);
   const [isActiveMovie, setActiveMovie] = useState(false);
@@ -31,14 +32,12 @@ const CustomDrawer = ({ navigation }) => {
   const [isActiveProfile, setActiveProfile] = useState(false);
   const [isActiveFavourite, setActiveFavourite] = useState(false);
   const [isActiveSetting, setActiveSetting] = useState(false);
-  const [userID, setUserID] = useState(null);
-
+  const [isActiveSubscription, setActiveSubscription] = useState(false);
   useEffect(() => {
     getAsyncData();
   }, []);
   getAsyncData = async () => {
-    const user_id = await AsyncStorage.getItem("user_id");
-    setUserID(user_id);
+    setUserID(await AsyncStorage.getItem("user_id"));
   };
   const onToggleSwitch = () => {
     setIsSwitchOn(!isSwitchOn);
@@ -66,6 +65,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(false);
     setActiveFavourite(false);
     setActiveSetting(false);
+    setActiveSubscription(false);
     navigation.navigate("MovieList");
   };
   const onPressSeries = () => {
@@ -78,6 +78,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(false);
     setActiveFavourite(false);
     setActiveSetting(false);
+    setActiveSubscription(false);
     navigation.navigate("SeriesList");
   };
   const onPressLive = () => {
@@ -90,6 +91,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(false);
     setActiveFavourite(false);
     setActiveSetting(false);
+    setActiveSubscription(false);
     navigation.navigate("LiveTVList");
   };
   const onPressGenre = () => {
@@ -102,6 +104,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(false);
     setActiveFavourite(false);
     setActiveSetting(false);
+    setActiveSubscription(false);
     navigation.navigate("GenreList");
   };
   const onPressCountry = () => {
@@ -114,6 +117,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(false);
     setActiveFavourite(false);
     setActiveSetting(false);
+    setActiveSubscription(false);
     navigation.navigate("CountryList");
   };
   const onPressProfile = () => {
@@ -126,6 +130,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(true);
     setActiveFavourite(false);
     setActiveSetting(false);
+    setActiveSubscription(false);
     navigation.navigate("Profile");
   };
   const onPressFavourite = () => {
@@ -138,6 +143,7 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(false);
     setActiveFavourite(true);
     setActiveSetting(false);
+    setActiveSubscription(false);
     navigation.navigate("FavouriteList");
   };
   const onPressSetting = () => {
@@ -150,7 +156,21 @@ const CustomDrawer = ({ navigation }) => {
     setActiveProfile(false);
     setActiveFavourite(false);
     setActiveSetting(true);
+    setActiveSubscription(false);
     navigation.navigate("SettingList");
+  };
+  const onPressSubscription = () => {
+    setActiveHome(false);
+    setActiveMovie(false);
+    setActiveSerie(false);
+    setActiveLive(false);
+    setActiveGenre(false);
+    setActiveCountry(false);
+    setActiveProfile(false);
+    setActiveFavourite(false);
+    setActiveSetting(false);
+    setActiveSubscription(true);
+    navigation.navigate("Subscription");
   };
   return (
     <View style={{ flex: 1 }}>
@@ -390,7 +410,7 @@ const CustomDrawer = ({ navigation }) => {
               </Text>
             </View>
           </TouchableOpacity>
-          {userID ? (
+          {user_id ? (
             <TouchableOpacity
               style={[
                 styles.row_container,
@@ -455,7 +475,7 @@ const CustomDrawer = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )}
-          {userID ? (
+          {user_id ? (
             <TouchableOpacity
               style={[
                 styles.row_container,
@@ -491,23 +511,24 @@ const CustomDrawer = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           ) : null}
-          {userID == null ? (
+
+          {user_id ? (
             <TouchableOpacity
               style={[
                 styles.row_container,
-                isActiveSetting
+                isActiveSubscription
                   ? {
                       backgroundColor: Colors.drawer_active_color,
                       borderRadius: 5,
                     }
                   : null,
               ]}
-              onPress={() => onPressSetting()}
+              onPress={() => onPressSubscription()}
               activeOpacity={0.8}
             >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Fontisto
-                  name="player-settings"
+                <MaterialCommunityIcons
+                  name="youtube-subscription"
                   size={20}
                   color={Colors.theme_color}
                 />
@@ -515,20 +536,55 @@ const CustomDrawer = ({ navigation }) => {
                   style={{
                     marginLeft: 30,
                     color: isDarkTheme
-                      ? isActiveSetting
+                      ? isActiveSubscription
                         ? Colors.drawer_dark_color
                         : "white"
                       : "gray",
                     fontFamily: Fonts.primary,
                   }}
                 >
-                  Setting
+                  Subscription
                 </Text>
               </View>
             </TouchableOpacity>
           ) : null}
 
-          {userID ? (
+          <TouchableOpacity
+            style={[
+              styles.row_container,
+              isActiveSetting
+                ? {
+                    backgroundColor: Colors.drawer_active_color,
+                    borderRadius: 5,
+                  }
+                : null,
+            ]}
+            onPress={() => onPressSetting()}
+            activeOpacity={0.8}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Fontisto
+                name="player-settings"
+                size={20}
+                color={Colors.theme_color}
+              />
+              <Text
+                style={{
+                  marginLeft: 30,
+                  color: isDarkTheme
+                    ? isActiveSetting
+                      ? Colors.drawer_dark_color
+                      : "white"
+                    : "gray",
+                  fontFamily: Fonts.primary,
+                }}
+              >
+                Setting
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          {user_id ? (
             <TouchableOpacity style={styles.row_container}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <AntDesign name="logout" size={20} color={Colors.theme_color} />

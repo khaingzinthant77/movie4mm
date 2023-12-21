@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { useTheme } from "@react-navigation/native";
 import { AppContext } from "../context/AppContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //import api url
 import { loginApi } from "@apis/Urls";
 import { API_KEY } from "@env";
@@ -62,16 +63,52 @@ const Login = ({ navigation }) => {
         password: password,
         device_id: Device.osBuildId,
       };
-      console.log(param);
       try {
         axios
           .post(loginApi, param, {
             headers: {
               "API-KEY": API_KEY,
+              "Content-Type": "application/x-www-form-urlencoded",
             },
           })
-          .then(function (response) {
-            console.log(response.data);
+          .then(async (response) => {
+            setLoading(false);
+            try {
+              const keyValues = [
+                ["email", response.data.email],
+                ["expire_date", response.data.expire_date],
+                ["gender", response.data.gender],
+                ["image_url", response.data.image_url],
+                [
+                  "join_date",
+                  response.data.join_date != null
+                    ? response.data.join_date
+                    : "",
+                ],
+                ["last_login", response.data.last_login],
+                ["name", response.data.name],
+                [
+                  "password_available",
+                  response.data.password_available.toString(),
+                ],
+                [
+                  "phone",
+                  response.data.phone != null ? response.data.phone : "",
+                ],
+                ["remaining_days", response.data.remaining_days.toString()],
+                ["site_code", response.data.site_code],
+                ["status", response.data.status],
+                ["user_id", response.data.user_id],
+                // Add more key-value pairs as needed
+              ];
+
+              // Perform multi-set operation
+              await AsyncStorage.multiSet(keyValues);
+              navigation.navigate("BottomNavigator");
+            } catch (error) {
+              console.error("Login Error storing data:", error);
+            }
+
             setLoading(false);
           })
           .catch(function (err) {
@@ -173,10 +210,10 @@ const Login = ({ navigation }) => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            onPress={() => handleLogin()}
+            onPress={() => (isLoading ? null : handleLogin())}
           >
             <Text style={{ color: "white", fontFamily: Fonts.primary }}>
-              SIGNIN
+              {isLoading ? "Loading..." : "SIGNIN"}
             </Text>
           </TouchableOpacity>
         </View>
