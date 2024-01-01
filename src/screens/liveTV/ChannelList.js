@@ -49,6 +49,7 @@ const MovieList = ({ navigation }) => {
         })
         .catch(function (err) {
           console.log("Feature TV Channel API", err);
+          setLoading(false);
         });
     } catch (error) {
       setLoading(false);
@@ -66,14 +67,10 @@ const MovieList = ({ navigation }) => {
           navigation.navigate("LiveDetail", { id: item.live_tv_id })
         }
       >
-        {isLoading ? (
-          <Skeleton animation="wave" width={100} height={50} />
-        ) : (
-          <Image
-            source={{ uri: item.thumbnail_url }}
-            style={styles.feature_img}
-          />
-        )}
+        <Image
+          source={{ uri: item.thumbnail_url }}
+          style={styles.feature_img}
+        />
 
         <Text style={{ fontFamily: Fonts.primary }}>{item.tv_name}</Text>
       </TouchableOpacity>

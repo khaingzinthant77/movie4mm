@@ -44,3 +44,9 @@ export const movieDetailApi = BaseUrl + "single_details";
 
 //favourite list api
 export const favouriteListApi = BaseUrl + "favorite";
+
+//add favourite api
+export const addFavouriteApi = BaseUrl + "add_favorite";
+
+//remove favourite  api
+export const removeFavouriteApi = BaseUrl + "remove_favorite";

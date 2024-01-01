@@ -6,6 +6,7 @@ import * as Device from "expo-device";
 import appjson from "@appjson";
 //import component
 import BackHeader from "@components/BackHeader";
+import RequestModal from "@components/RequestModal";
 //import icon
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -19,11 +20,16 @@ const SettingList = ({ navigation }) => {
   const { colors } = useTheme();
   const [isSwitchOn, setIsSwitchOn] = useState(true);
   const [isSwitchAdult, setIsSwitchAdult] = useState(false);
+  const [showRequestModal, setRequestModal] = useState(false);
   const onToggleSwitch = () => {
     setIsSwitchOn(!isSwitchOn);
   };
   const onToggleAdult = () => {
     setIsSwitchAdult(!isSwitchAdult);
+  };
+
+  handleRequestMovie = (usr_name, email, movie_name, message) => {
+    alert(usr_name);
   };
 
   return (
@@ -92,6 +98,7 @@ const SettingList = ({ navigation }) => {
             paddingHorizontal: 10,
             alignItems: "center",
           }}
+          onPress={() => setRequestModal(true)}
         >
           <MaterialCommunityIcons
             name="message-reply-text"
@@ -187,6 +194,13 @@ const SettingList = ({ navigation }) => {
           </View>
         </View>
         <Divider style={{ marginVertical: 10 }} />
+        <RequestModal
+          isOpen={showRequestModal}
+          onClose={() => setRequestModal(false)}
+          requestMovie={(usr_name, email, movie_name, message) =>
+            handleRequestMovie(usr_name, email, movie_name, message)
+          }
+        />
       </ScrollView>
     </View>
   );

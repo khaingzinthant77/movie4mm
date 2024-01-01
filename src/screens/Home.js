@@ -96,7 +96,9 @@ const Home = ({ navigation }) => {
 
         let four_k_arr = [];
         response.data.latest_movies.map((data, index) => {
+          // console.log(data);
           var four_k_obj = {
+            id: data.videos_id,
             title: data.title,
             release: data.release,
             video_quality: data.video_quality,
@@ -111,6 +113,7 @@ const Home = ({ navigation }) => {
         let latest_arr = [];
         response.data.latest_movies.map((data, index) => {
           var latest_obj = {
+            id: data.videos_id,
             title: data.title,
             release: data.release,
             video_quality: data.video_quality,
@@ -125,6 +128,7 @@ const Home = ({ navigation }) => {
         let latest_tv_arr = [];
         response.data.latest_tvseries.map((data, index) => {
           var latest_tv_obj = {
+            id: data.videos_id,
             title: data.title,
             release: data.release,
             video_quality: data.video_quality,
@@ -443,7 +447,15 @@ const Home = ({ navigation }) => {
               >
                 {four_k.map((data, index) => {
                   return (
-                    <TouchableOpacity style={styles.card_btn} key={index}>
+                    <TouchableOpacity
+                      style={styles.card_btn}
+                      key={index}
+                      onPress={() =>
+                        navigation.navigate("MovieDetail", {
+                          id: data.id,
+                        })
+                      }
+                    >
                       <Image
                         source={{ uri: data.thumbnail_url }}
                         style={styles.card_img}
@@ -493,7 +505,15 @@ const Home = ({ navigation }) => {
               >
                 {latest_movies.map((data, index) => {
                   return (
-                    <TouchableOpacity style={styles.card_btn} key={index}>
+                    <TouchableOpacity
+                      style={styles.card_btn}
+                      key={index}
+                      onPress={() =>
+                        navigation.navigate("MovieDetail", {
+                          id: data.id,
+                        })
+                      }
+                    >
                       <Image
                         source={{ uri: data.thumbnail_url }}
                         style={styles.card_img}
@@ -543,7 +563,15 @@ const Home = ({ navigation }) => {
               >
                 {latest_tv.map((data, index) => {
                   return (
-                    <TouchableOpacity style={styles.card_btn} key={index}>
+                    <TouchableOpacity
+                      style={styles.card_btn}
+                      key={index}
+                      onPress={() =>
+                        navigation.navigate("MovieDetail", {
+                          id: data.id,
+                        })
+                      }
+                    >
                       <Image
                         source={{ uri: data.thumbnail_url }}
                         style={styles.card_img}
@@ -602,8 +630,17 @@ const Home = ({ navigation }) => {
                     showsHorizontalScrollIndicator={false}
                   >
                     {data.videos.map((data, index) => {
+                      // console.log(data);
                       return (
-                        <TouchableOpacity style={styles.card_btn} key={index}>
+                        <TouchableOpacity
+                          style={styles.card_btn}
+                          key={index}
+                          onPress={() =>
+                            navigation.navigate("MovieDetail", {
+                              id: data.videos_id,
+                            })
+                          }
+                        >
                           <Image
                             source={{ uri: data.thumbnail_url }}
                             style={styles.card_img}
