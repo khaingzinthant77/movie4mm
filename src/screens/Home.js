@@ -95,7 +95,8 @@ const Home = ({ navigation }) => {
         });
 
         let four_k_arr = [];
-        response.data.latest_movies.map((data, index) => {
+
+        response.data["4k_movies"].map((data, index) => {
           // console.log(data);
           var four_k_obj = {
             id: data.videos_id,
@@ -376,21 +377,24 @@ const Home = ({ navigation }) => {
               </ScrollView>
             </View>
             <View style={{ paddingHorizontal: 10, marginTop: 15 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={[styles.title_style, { color: colors.text }]}>
-                  {new Date().getFullYear()}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("CurrentYearMovie")}
+              {current_years.length > 0 ? (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
                 >
-                  <Text style={{ color: colors.text }}>MORE</Text>
-                </TouchableOpacity>
-              </View>
+                  <Text style={[styles.title_style, { color: colors.text }]}>
+                    {new Date().getFullYear()}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("CurrentYearMovie")}
+                  >
+                    <Text style={{ color: colors.text }}>MORE</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
