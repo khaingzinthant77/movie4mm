@@ -17,6 +17,12 @@ export default class QualityModal extends React.Component {
     }
   }
 
+  viewMovie(url) {
+    if (this.props.viewMoviePlayer) {
+      this.props.viewMoviePlayer(url);
+    }
+  }
+
   render() {
     return (
       <Modal
@@ -73,6 +79,7 @@ export default class QualityModal extends React.Component {
                     alignItems: "center",
                   }}
                   key={index}
+                  onPress={() => this.viewMovie(data.file_url)}
                 >
                   <Text style={{ fontFamily: Fonts.primary, fontSize: 14 }}>
                     {data.label}

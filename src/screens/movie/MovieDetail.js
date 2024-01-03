@@ -146,6 +146,12 @@ const MovieDetail = () => {
         console.log("Movie Detail API", error);
       });
   };
+
+  navigateRoute = (url) => {
+    // console.log(url);
+    setQualityModal(false);
+    navigation.navigate("MoviePlayer", { url });
+  };
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <SafeAreaView />
@@ -309,6 +315,7 @@ const MovieDetail = () => {
         onClose={() => closeModal()}
         isOpen={showQualityModal}
         video_arr={videos}
+        viewMoviePlayer={(url) => navigateRoute(url)}
       />
     </View>
   );

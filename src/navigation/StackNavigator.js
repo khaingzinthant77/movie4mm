@@ -21,7 +21,7 @@ import MovieDetail from "@screens/movie/MovieDetail";
 import ChannelList from "@screens/liveTV/ChannelList";
 import LiveDetail from "@screens/liveTV/LiveDetail";
 import Subscription from "@screens/auth/Subscription";
-
+import MoviePlayer from "@screens/movie/MoviePlayer";
 const Stack = createStackNavigator();
 
 const StackNavigator = () => (
@@ -119,6 +119,11 @@ const StackNavigator = () => (
     <Stack.Screen
       name="Subscription"
       component={Subscription}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="MoviePlayer"
+      component={MoviePlayer}
       options={{ headerShown: false }}
     />
   </Stack.Navigator>
