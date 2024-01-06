@@ -56,7 +56,14 @@ const LatestList = ({ navigation }) => {
 
   renderItem = ({ item }) => {
     return (
-      <TouchableOpacity style={Styles.card_btn}>
+      <TouchableOpacity
+        style={Styles.card_btn}
+        onPress={() =>
+          route.params.type == 1
+            ? navigation.navigate("SeriesDetail", { id: item.videos_id })
+            : navigation.navigate("MovieDetail", { id: item.videos_id })
+        }
+      >
         <Image source={{ uri: item.thumbnail_url }} style={Styles.card_img} />
         <Text>
           {" "}
@@ -107,7 +114,7 @@ const LatestList = ({ navigation }) => {
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <BackHeader
         Onpress={() => navigation.navigate("BottomNavigator")}
-        name="Latest Movies"
+        name={route.params.title ? route.params.title : "Latest Movies"}
       />
       <FlatList
         data={data}

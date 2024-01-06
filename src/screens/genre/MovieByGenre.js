@@ -96,7 +96,7 @@ const MovieByGenre = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <BackHeader
-        Onpress={() => navigation.navigate("BottomNavigator")}
+        Onpress={() => navigation.goBack()}
         name={route.params.name}
       />
       <FlatList

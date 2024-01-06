@@ -57,7 +57,16 @@ const GenreList = ({ navigation }) => {
   };
   renderItem = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.genere_btn} activeOpacity={0.8}>
+      <TouchableOpacity
+        style={styles.genere_btn}
+        activeOpacity={0.8}
+        onPress={() =>
+          navigation.navigate("MovieByGenre", {
+            genre_id: item.genre_id,
+            name: item.name,
+          })
+        }
+      >
         <Image
           source={{ uri: item.image_url }}
           style={styles.genere_img_style}

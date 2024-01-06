@@ -49,8 +49,6 @@ const MovieDetail = () => {
   const [showQualityModal, setQualityModal] = useState(false);
   const [is_fav, setFav] = useState(false);
 
-  const image = { uri: "https://legacy.reactjs.org/logo-og.png" };
-
   useEffect(() => {
     fetchData();
     alreadyFav();
@@ -62,6 +60,7 @@ const MovieDetail = () => {
 
   const fetchData = async () => {
     let url = movieDetailApi + "?type=movie&id=" + route.params.id;
+
     setUserID(await AsyncStorage.getItem("user_id"));
     setLoading(true);
     axios

@@ -56,7 +56,14 @@ const SeriesList = ({ navigation }) => {
   };
   renderItem = ({ item }) => {
     return (
-      <TouchableOpacity style={Styles.card_btn}>
+      <TouchableOpacity
+        style={Styles.card_btn}
+        onPress={() =>
+          navigation.navigate("SeriesDetail", {
+            id: item.videos_id,
+          })
+        }
+      >
         <Image source={{ uri: item.thumbnail_url }} style={Styles.card_img} />
         <Text>
           {" "}

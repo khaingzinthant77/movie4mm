@@ -50,3 +50,6 @@ export const addFavouriteApi = BaseUrl + "add_favorite";
 
 //remove favourite  api
 export const removeFavouriteApi = BaseUrl + "remove_favorite";
+
+//my account subscription api
+export const myAccountApi = BaseUrl + "my_account";

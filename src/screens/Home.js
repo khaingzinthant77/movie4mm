@@ -14,7 +14,6 @@ import { useTheme } from "@react-navigation/native";
 import { ImageSlider } from "react-native-image-slider-banner";
 import { Skeleton } from "@rneui/themed";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 //import url
 import { homeApi } from "@apis/Urls";
 import { API_KEY } from "@env";
@@ -83,6 +82,7 @@ const Home = ({ navigation }) => {
         let current_year_arr = [];
         response.data.current_year_movies.map((data, index) => {
           var current_obj = {
+            id: data.videos_id,
             title: data.title,
             release: data.release,
             video_quality: data.video_quality,
@@ -401,7 +401,13 @@ const Home = ({ navigation }) => {
               >
                 {current_years.map((data, index) => {
                   return (
-                    <TouchableOpacity style={styles.card_btn} key={index}>
+                    <TouchableOpacity
+                      style={styles.card_btn}
+                      key={index}
+                      onPress={() =>
+                        navigation.navigate("MovieDetail", { id: data.id })
+                      }
+                    >
                       <Image
                         source={{ uri: data.thumbnail_url }}
                         style={styles.card_img}
@@ -556,7 +562,12 @@ const Home = ({ navigation }) => {
                   Latest TV Series
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("LatestList", { type: 1 })}
+                  onPress={() =>
+                    navigation.navigate("LatestList", {
+                      type: 1,
+                      title: "TV Series",
+                    })
+                  }
                 >
                   <Text style={{ color: colors.text }}>MORE</Text>
                 </TouchableOpacity>
@@ -571,7 +582,7 @@ const Home = ({ navigation }) => {
                       style={styles.card_btn}
                       key={index}
                       onPress={() =>
-                        navigation.navigate("MovieDetail", {
+                        navigation.navigate("SeriesDetail", {
                           id: data.id,
                         })
                       }
