@@ -25,10 +25,6 @@ const CountryList = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
-  const getRandomColor = () => {
-    const color = Math.floor(Math.random() * 16777215).toString(16);
-    return `#${color}`;
-  };
   useEffect(() => {
     fetchData();
   }, []);
@@ -56,12 +52,25 @@ const CountryList = ({ navigation }) => {
       setError(error);
     }
   };
-  renderItem = ({ item }) => {
-    const startColor = getRandomColor();
-    const endColor = getRandomColor();
+  const gradients = [
+    ["#AAD9BB", "#80BCBD"],
+    ["#3887BE", "#52D3D8"],
+    ["#435585", "#363062"],
+    ["#FFDD95", "#FF9843"],
+    // Add more gradients as needed
+  ];
+  renderItem = ({ item, index }) => {
+    const colors = gradients[index % gradients.length];
     return (
-      <LinearGradient colors={[startColor, endColor]} style={styles.button}>
-        <TouchableOpacity>
+      <LinearGradient colors={colors} style={styles.button}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("MovieListByCountry", {
+              country_id: item.country_id,
+              name: item.name,
+            })
+          }
+        >
           <Image
             source={{ uri: item.image_url }}
             style={{ width: 30, height: 30 }}

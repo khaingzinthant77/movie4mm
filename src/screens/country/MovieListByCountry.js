@@ -7,11 +7,11 @@ import BackHeader from "@components/BackHeader";
 //import library
 import axios from "axios";
 //import api url
-import { contentByGenreApi } from "@apis/Urls";
+import { movieByCountry } from "@apis/Urls";
 import { API_KEY } from "@env";
 //import style
 import Styles from "@styles/Styles";
-const MovieByGenre = ({ navigation }) => {
+const MovieListByCountry = ({ navigation }) => {
   const { colors } = useTheme();
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const MovieByGenre = ({ navigation }) => {
     fetchData();
   }, []);
   fetchData = () => {
-    const url = contentByGenreApi + `?id=${route.params.genre_id}&page=${page}`;
+    const url = movieByCountry + `?id=${route.params.country_id}&page=${page}`;
     setLoading(false);
     try {
       axios
@@ -129,4 +129,4 @@ const MovieByGenre = ({ navigation }) => {
   );
 };
 
-export default MovieByGenre;
+export default MovieListByCountry;

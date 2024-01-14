@@ -53,3 +53,6 @@ export const removeFavouriteApi = BaseUrl + "remove_favorite";
 
 //my account subscription api
 export const myAccountApi = BaseUrl + "my_account";
+
+//movie list by country
+export const movieByCountry = BaseUrl + "content_by_country_id";

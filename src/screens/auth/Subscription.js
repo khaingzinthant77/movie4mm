@@ -27,10 +27,15 @@ const Subscription = ({ navigation }) => {
   fetchData = async () => {
     setLoading(true);
     try {
+      let param = {
+        user_id: 41,
+      };
+
       axios
-        .get(myAccountApi, {
+        .post(myAccountApi, param, {
           headers: {
             "API-KEY": API_KEY,
+            "Content-Type": "application/x-www-form-urlencoded",
           },
         })
         .then(function (response) {
@@ -77,7 +82,9 @@ const Subscription = ({ navigation }) => {
               </Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ marginLeft: 20 }}>{user_name}</Text>
+              <Text style={{ marginLeft: 20 }}>
+                {isLoading ? "-" : user_name}
+              </Text>
             </View>
           </View>
           <View style={{ flexDirection: "row", paddingVertical: 5 }}>
@@ -87,7 +94,7 @@ const Subscription = ({ navigation }) => {
               </Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ marginLeft: 20 }}>{email}</Text>
+              <Text style={{ marginLeft: 20 }}>{isLoading ? "-" : email}</Text>
             </View>
           </View>
           <View style={{ flexDirection: "row", paddingVertical: 5 }}>
@@ -97,7 +104,9 @@ const Subscription = ({ navigation }) => {
               </Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ marginLeft: 20 }}>{expire_date}</Text>
+              <Text style={{ marginLeft: 20 }}>
+                {isLoading ? "-" : expire_date}
+              </Text>
             </View>
           </View>
           <View style={{ flexDirection: "row", paddingVertical: 5 }}>
@@ -107,7 +116,9 @@ const Subscription = ({ navigation }) => {
               </Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ marginLeft: 20 }}>{remaining_days}</Text>
+              <Text style={{ marginLeft: 20 }}>
+                {isLoading ? "-" : remaining_days}
+              </Text>
             </View>
           </View>
         </View>
